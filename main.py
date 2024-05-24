@@ -1,6 +1,6 @@
 import streamlit as st
 
-frase = 'CASA COMIGO?'
+frase = 'NAMORA COMIGO?'
 
 def img():
     st.image(fases.get((st.session_state.tentativas)))
