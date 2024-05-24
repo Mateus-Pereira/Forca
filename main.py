@@ -1,7 +1,5 @@
 import streamlit as st
 
-frase = 'Casa COMIGO?'
-
 def img():
     st.image(fases.get((st.session_state.tentativas)))
 
@@ -19,6 +17,11 @@ st.markdown("""
 def reset_game():
     st.session_state.clear()  # Limpa todo o estado da sessão
     st.experimental_rerun()
+
+input_palavra = st.text_input("Digite a palavra a ser adivinhada (em maiúsculas):", key="input_palavra").upper()
+
+if input_palavra:
+    frase = input_palavra
 
 input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
 fases = {
@@ -86,4 +89,3 @@ def jogar():
                 st.subheader(st.session_state.frase_completa[i])
 
 jogar()
-print(st.session_state.tentativas)
