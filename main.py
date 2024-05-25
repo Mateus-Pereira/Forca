@@ -48,46 +48,51 @@ else:
         img()
 
     def jogar():
-        input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
-        if len(input_letra) == 1 and input_letra.isalpha():
-            if input_letra in st.session_state.letras_adivinhadas:
-                st.error(f"Você já adivinhou a letra {input_letra}")
-            elif input_letra not in frase:
-                st.error(f"{input_letra} não está na palavra.")
-                st.session_state.tentativas -= 1
-                st.session_state.letras_adivinhadas.append(input_letra)
-            else:
-                st.success(f"Parabéns, {input_letra} está na frase!")
-                index = [i for i, letra in enumerate(frase) if letra == input_letra]
-                frase_completa_lista = list(st.session_state.frase_completa)
-                for i in index:
-                    frase_completa_lista[i] = input_letra
-                st.session_state.frase_completa = "".join(frase_completa_lista)
-                st.session_state.letras_adivinhadas.append(input_letra)
-
-            img()
-
-            # Limpar o campo de entrada após o envio
+        if 'input_letra' not in st.session_state:
             st.session_state.input_letra = ""
+        
+        input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
+        
+        if st.session_state.input_letra:
+            input_letra = st.session_state.input_letra.upper()
+            st.session_state.input_letra = ""  # Limpar o campo de entrada após o envio
 
-        if all(c in st.session_state.letras_adivinhadas or c in [' ', '?'] for c in frase):
-            st.balloons()
-            st.success('Parabéns! Você acertou a frase completa!')
+            if len(input_letra) == 1 and input_letra.isalpha():
+                if input_letra in st.session_state.letras_adivinhadas:
+                    st.error(f"Você já adivinhou a letra {input_letra}")
+                elif input_letra not in frase:
+                    st.error(f"{input_letra} não está na palavra.")
+                    st.session_state.tentativas -= 1
+                    st.session_state.letras_adivinhadas.append(input_letra)
+                else:
+                    st.success(f"Parabéns, {input_letra} está na frase!")
+                    index = [i for i, letra in enumerate(frase) if letra == input_letra]
+                    frase_completa_lista = list(st.session_state.frase_completa)
+                    for i in index:
+                        frase_completa_lista[i] = input_letra
+                    st.session_state.frase_completa = "".join(frase_completa_lista)
+                    st.session_state.letras_adivinhadas.append(input_letra)
 
-        elif len(input_letra) > 1:
-            st.warning("Escreva apenas uma letra.")
-        elif input_letra and not input_letra.isalpha():
-            st.warning('Digito inválido.')
+                img()
 
-        if st.session_state.tentativas <= 0:
-            st.error('Você perdeu!')
-            if st.button("Tentar novamente"):
-                reset_game()
+            if all(c in st.session_state.letras_adivinhadas or c in [' ', '?'] for c in frase):
+                st.balloons()
+                st.success('Parabéns! Você acertou a frase completa!')
 
-        columns = st.columns(len(frase))
+            elif len(input_letra) > 1:
+                st.warning("Escreva apenas uma letra.")
+            elif input_letra and not input_letra.isalpha():
+                st.warning('Digito inválido.')
 
-        for i, col in enumerate(columns):
-            with col:
-                st.subheader(st.session_state.frase_completa[i])
+            if st.session_state.tentativas <= 0:
+                st.error('Você perdeu!')
+                if st.button("Tentar novamente"):
+                    reset_game()
+
+            columns = st.columns(len(frase))
+
+            for i, col in enumerate(columns):
+                with col:
+                    st.subheader(st.session_state.frase_completa[i])
 
     jogar()
