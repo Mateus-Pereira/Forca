@@ -1,19 +1,8 @@
 import streamlit as st
 
-# Definindo fases no início para garantir que esteja disponível
-fases = {
-    7: "1.png",
-    6: "2.png",
-    5: "3.png",
-    4: "4.png",
-    3: "5.png",
-    2: "6.png",
-    1: "7.png",
-    0: "0.png"
-}
-
 def img():
-    st.image(fases.get(st.session_state.tentativas))
+    if 'tentativas' in st.session_state:
+        st.image(fases.get(st.session_state.tentativas))
 
 st.title('Jogo da Forca do Amor')
 st.markdown("""
@@ -41,7 +30,16 @@ if 'frase_escolhida' not in st.session_state:
         img()
 else:
     frase = st.session_state.frase_escolhida
-    input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
+    fases = {
+        7: "1.png",
+        6: "2.png",
+        5: "3.png",
+        4: "4.png",
+        3: "5.png",
+        2: "6.png",
+        1: "7.png",
+        0: "0.png"
+    }
 
     if 'tentativas' not in st.session_state:
         st.session_state.tentativas = 7
@@ -50,6 +48,7 @@ else:
         img()
 
     def jogar():
+        input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
         if len(input_letra) == 1 and input_letra.isalpha():
             if input_letra in st.session_state.letras_adivinhadas:
                 st.error(f"Você já adivinhou a letra {input_letra}")
@@ -70,7 +69,6 @@ else:
 
             # Limpar o campo de entrada após o envio
             st.session_state.input_letra = ""
-            st.experimental_rerun()
 
         if all(c in st.session_state.letras_adivinhadas or c in [' ', '?'] for c in frase):
             st.balloons()
