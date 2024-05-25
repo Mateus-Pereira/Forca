@@ -27,7 +27,7 @@ if 'frase_escolhida' not in st.session_state:
         st.session_state.tentativas = 7
         st.session_state.letras_adivinhadas = []
         st.session_state.frase_completa = '_' * len(st.session_state.frase_escolhida)
-        img()
+        st.experimental_rerun()  # Recarrega a página para esconder a seleção da frase
 else:
     frase = st.session_state.frase_escolhida
     fases = {
