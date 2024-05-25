@@ -1,5 +1,17 @@
 import streamlit as st
 
+# Definindo fases no início para garantir que esteja disponível
+fases = {
+    7: "1.png",
+    6: "2.png",
+    5: "3.png",
+    4: "4.png",
+    3: "5.png",
+    2: "6.png",
+    1: "7.png",
+    0: "0.png"
+}
+
 def img():
     st.image(fases.get(st.session_state.tentativas))
 
@@ -30,16 +42,6 @@ if 'frase_escolhida' not in st.session_state:
 else:
     frase = st.session_state.frase_escolhida
     input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
-    fases = {
-        7: "1.png",
-        6: "2.png",
-        5: "3.png",
-        4: "4.png",
-        3: "5.png",
-        2: "6.png",
-        1: "7.png",
-        0: "0.png"
-    }
 
     if 'tentativas' not in st.session_state:
         st.session_state.tentativas = 7
@@ -66,6 +68,10 @@ else:
 
             img()
 
+            # Limpar o campo de entrada após o envio
+            st.session_state.input_letra = ""
+            st.experimental_rerun()
+
         if all(c in st.session_state.letras_adivinhadas or c in [' ', '?'] for c in frase):
             st.balloons()
             st.success('Parabéns! Você acertou a frase completa!')
@@ -85,8 +91,5 @@ else:
         for i, col in enumerate(columns):
             with col:
                 st.subheader(st.session_state.frase_completa[i])
-
-        # Limpar o campo de entrada após o envio
-        st.session_state.input_letra = ""
 
     jogar()
