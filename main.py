@@ -1,7 +1,9 @@
 import streamlit as st
 
 def img():
-    st.image(fases.get((st.session_state.tentativas)))
+    fase_atual = st.session_state.tentativas
+    imagem = f"/mnt/data/{fase_atual}.png"
+    st.image(imagem)
 
 st.title('Jogo da Forca')
 
@@ -17,17 +19,6 @@ st.markdown("""
 def reset_game():
     st.session_state.clear()  # Limpa todo o estado da sessão
     st.experimental_rerun()
-
-fases = {
-    7: "https://via.placeholder.com/150?text=7",
-    6: "https://via.placeholder.com/150?text=6",
-    5: "https://via.placeholder.com/150?text=5",
-    4: "https://via.placeholder.com/150?text=4",
-    3: "https://via.placeholder.com/150?text=3",
-    2: "https://via.placeholder.com/150?text=2",
-    1: "https://via.placeholder.com/150?text=1",
-    0: "https://via.placeholder.com/150?text=0"
-}
 
 if 'tentativas' not in st.session_state:
     st.session_state.tentativas = 7
