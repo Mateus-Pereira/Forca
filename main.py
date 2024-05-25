@@ -19,17 +19,16 @@ def reset_game():
 
 frases_possiveis = ['NAMORA COMIGO?', 'TE AMO MUITO', 'CASA COMIGO?', 'VOCÊ É LINDA', 'VOCÊ ME COMPLETA']
 
-if 'frase' not in st.session_state:
+if 'frase_escolhida' not in st.session_state:
     st.session_state.frase = st.selectbox("Escolha uma frase para jogar", frases_possiveis, key='frase_selecionada')
     if st.button("Confirmar frase"):
-        st.session_state.frase_escolhida = True
+        st.session_state.frase_escolhida = st.session_state.frase
         st.session_state.tentativas = 7
         st.session_state.letras_adivinhadas = []
-        st.session_state.palavras_em_lista = []
-        st.session_state.frase_completa = '_' * len(st.session_state.frase)
+        st.session_state.frase_completa = '_' * len(st.session_state.frase_escolhida)
         img()
 else:
-    frase = st.session_state.frase
+    frase = st.session_state.frase_escolhida
     input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
     fases = {
         7: "1.png",
@@ -45,9 +44,8 @@ else:
     if 'tentativas' not in st.session_state:
         st.session_state.tentativas = 7
         st.session_state.letras_adivinhadas = []
-        st.session_state.palavras_em_lista = []
-        img()
         st.session_state.frase_completa = '_' * len(frase)
+        img()
 
     def jogar():
         if len(input_letra) == 1 and input_letra.isalpha():
@@ -79,8 +77,7 @@ else:
 
         if st.session_state.tentativas <= 0:
             st.error('Você perdeu!')
-            button_key = f"tentar_novamente_btn{st.session_state.tentativas}"
-            if st.button("Tentar novamente", key=button_key):
+            if st.button("Tentar novamente"):
                 reset_game()
 
         columns = st.columns(len(frase))
@@ -88,5 +85,8 @@ else:
         for i, col in enumerate(columns):
             with col:
                 st.subheader(st.session_state.frase_completa[i])
+
+        # Limpar o campo de entrada após o envio
+        st.session_state.input_letra = ""
 
     jogar()
