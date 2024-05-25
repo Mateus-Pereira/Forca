@@ -15,7 +15,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 def reset_game():
-    st.session_state.clear()  # Limpa todo o estado da sessão
+    st.session_state.clear()
     st.experimental_rerun()
 
 frases_possiveis = ['NAMORA COMIGO?', 'TE AMO MUITO', 'CASA COMIGO?', 'VOCÊ É LINDA', 'VOCÊ ME COMPLETA']
@@ -27,7 +27,7 @@ if 'frase_escolhida' not in st.session_state:
         st.session_state.tentativas = 7
         st.session_state.letras_adivinhadas = []
         st.session_state.frase_completa = '_' * len(st.session_state.frase_escolhida)
-        st.experimental_rerun()  # Recarrega a página para esconder a seleção da frase
+        st.experimental_rerun()
 else:
     frase = st.session_state.frase_escolhida
     fases = {
@@ -48,14 +48,14 @@ else:
         img()
 
     def jogar():
-        input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
+        input_letra = st.text_input("Digite uma letra 👇").upper()
 
         if st.button("Enviar letra"):
             if len(input_letra) == 1 and input_letra.isalpha():
                 if input_letra in st.session_state.letras_adivinhadas:
                     st.error(f"Você já adivinhou a letra {input_letra}")
                 elif input_letra not in frase:
-                    st.error(f"{input_letra} não está na palavra.")
+                    st.error(f"{input_letra} não está na frase.")
                     st.session_state.tentativas -= 1
                     st.session_state.letras_adivinhadas.append(input_letra)
                 else:
