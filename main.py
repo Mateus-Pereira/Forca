@@ -48,7 +48,11 @@ else:
         img()
 
     def jogar():
+        if 'input_letra' not in st.session_state:
+            st.session_state.input_letra = ""
+
         input_letra = st.text_input("Digite uma letra 👇", key="input_letra").upper()
+
         if st.button("Enviar letra"):
             if len(input_letra) == 1 and input_letra.isalpha():
                 if input_letra in st.session_state.letras_adivinhadas:
@@ -83,7 +87,7 @@ else:
                     reset_game()
 
             # Limpar o campo de entrada após o envio
-            st.session_state.input_letra = ""
+            st.session_state.input_letra = st.empty().text_input("Digite uma letra 👇", key="input_letra").upper()
 
         columns = st.columns(len(frase))
 
