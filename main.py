@@ -18,7 +18,7 @@ def reset_game():
     st.session_state.clear()
     st.experimental_rerun()
 
-frases_possiveis = ['NAMORA COMIGO?', 'TE AMO MUITO', 'CASA COMIGO?', 'VOCÊ É LINDA', 'VOCÊ ME COMPLETA']
+frases_possiveis = ['NAMORA COMIGO?', 'TE AMO MUITO', 'CASA COMIGO?', 'VOCÊ E LINDA', 'VOCÊ ME COMPLETA']
 
 if 'frase_escolhida' not in st.session_state:
     st.session_state.frase = st.selectbox("Escolha uma frase para jogar", frases_possiveis, key='frase_selecionada')
